@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer Widget</title>
+    <style>
+        body{
+            background-color: black;
+            color: beige;
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: fit-content;
+            margin: 10px auto;
+        }
+        .time{
+            font-size: 40px;
+            width: fit-content;
+        }
+        .buttonsCont{
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+        }
+        .start_stop, .reset{
+            padding: 5px 10px;
+            border: 1px solid beige;
+            border-radius: 15px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        .start_stop:hover, .reset:hover{
+            border: 1px solid lightblue;
+        }
+    </style>
+</head>
+<body>
+    <div class="time">
+        00:00:00
+    </div>
+    <div class="buttonsCont">
+        <div class="start_stop">Start</div>
+        <div class="reset">Reset</div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const timeDisplay = document.querySelector('.time');
+            const startStopBtn = document.querySelector('.start_stop');
+            const resetBtn = document.querySelector('.reset');
+            let timerInterval;
+            let seconds = 0;
+
+            function startTimer() {
+                timerInterval = setInterval(function () {
+                    seconds++;
+                    const hours = Math.floor(seconds / 3600);
+                    const minutes = Math.floor((seconds % 3600) / 60);
+                    const remainingSeconds = seconds % 60;
+                    timeDisplay.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+                }, 1000);
+            }
+
+            function stopTimer() {
+                clearInterval(timerInterval);
+            }
+
+            function resetTimer() {
+                clearInterval(timerInterval);
+                seconds = 0;
+                timeDisplay.textContent = '00:00:00';
+                startStopBtn.textContent = 'Start';
+            }
+
+            startStopBtn.addEventListener('click', function () {
+                if (startStopBtn.textContent === 'Start') {
+                    startStopBtn.textContent = 'Stop';
+                    startTimer();
+                } else {
+                    startStopBtn.textContent = 'Start';
+                    stopTimer();
+                }
+            });
+
+            resetBtn.addEventListener('click', resetTimer);
+        });
+    </script>
+</body>
+</html>
